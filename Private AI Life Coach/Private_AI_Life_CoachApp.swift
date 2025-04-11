@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import CoreML
 
 @main
 struct Private_AI_Life_CoachApp: App {
+    @State private var model: MLModel? = nil
+    
+    init() {
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ChatView()
         }
     }
 }
