@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		59928A4C2DA8419F00AC1E75 /* llama.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59928A4B2DA8419F00AC1E75 /* llama.xcframework */; };
 		59928A4D2DA8419F00AC1E75 /* llama.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 59928A4B2DA8419F00AC1E75 /* llama.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		59D8C8CA2DAB0F7800BF16EB /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 59D8C8C92DAB0F7800BF16EB /* GRDB */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				59928A4C2DA8419F00AC1E75 /* llama.xcframework in Frameworks */,
+				59D8C8CA2DAB0F7800BF16EB /* GRDB in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +145,7 @@
 			);
 			name = "Private AI Life Coach";
 			packageProductDependencies = (
+				59D8C8C92DAB0F7800BF16EB /* GRDB */,
 			);
 			productName = "Private AI Life Coach";
 			productReference = 593DDE552DA7572600437802 /* Private AI Life Coach.app */;
@@ -230,6 +233,7 @@
 			mainGroup = 593DDE4C2DA7572600437802;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				59D8C8C82DAB0F7800BF16EB /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 593DDE562DA7572600437802 /* Products */;
@@ -592,6 +596,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		59D8C8C82DAB0F7800BF16EB /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		59D8C8C92DAB0F7800BF16EB /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 59D8C8C82DAB0F7800BF16EB /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 593DDE4D2DA7572600437802 /* Project object */;
 }

@@ -13,6 +13,7 @@ struct Private_AI_Life_CoachApp: App {
     @State private var model: MLModel? = nil
     
     init() {
+        _ = DatabaseManager.shared
     }
     
     var body: some Scene {

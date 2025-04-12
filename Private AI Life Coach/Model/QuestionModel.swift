@@ -17,7 +17,16 @@ struct Questionnaire: Codable {
 
 class UserResponses: ObservableObject {
     // For each question, store an ordered array of option IDs representing priorities
-    @Published var prioritizedResponses: [String: [String]] = [:]
+    @Published var prioritizedResponses: [String: [String]] = [:] {
+        didSet {
+            // Don't save the entire response set on each change
+            // Instead we'll save individual question responses
+        }
+    }
+    
+    init() {
+        loadResponsesFromDatabase()
+    }
     
     // Add an option to the priority list or update its priority
     func toggleResponse(questionId: String, optionId: String) {
@@ -32,6 +41,11 @@ class UserResponses: ObservableObject {
         } else {
             // Otherwise add it to the end (lowest priority of selected items)
             prioritizedResponses[questionId]?.append(optionId)
+        }
+        
+        // Save this specific question's response immediately
+        if let options = prioritizedResponses[questionId] {
+            DatabaseManager.shared.saveQuestionnaireResponses(questionId: questionId, optionIds: options)
         }
     }
     
@@ -71,6 +85,32 @@ class UserResponses: ObservableObject {
     
     func clear() {
         prioritizedResponses = [:]
+        DatabaseManager.shared.clearQuestionnaireResponses()
+        setQuestionnaireCompleted(false)
+    }
+    
+    // MARK: - Database Operations
+    
+    private func saveResponsesToDatabase() {
+        // This is now only used for complete resets
+        DatabaseManager.shared.clearQuestionnaireResponses()
+        
+        // Save all responses
+        for (questionId, optionIds) in prioritizedResponses {
+            DatabaseManager.shared.saveQuestionnaireResponses(questionId: questionId, optionIds: optionIds)
+        }
+    }
+    
+    private func loadResponsesFromDatabase() {
+        prioritizedResponses = DatabaseManager.shared.getQuestionnaireResponses()
+    }
+    
+    func setQuestionnaireCompleted(_ completed: Bool) {
+        DatabaseManager.shared.saveUserSettings(key: "questionnaire_completed", value: completed ? "true" : "false")
+    }
+    
+    func isQuestionnaireCompleted() -> Bool {
+        return DatabaseManager.shared.getUserSetting(key: "questionnaire_completed") == "true"
     }
 }
 

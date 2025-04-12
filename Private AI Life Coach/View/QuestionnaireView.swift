@@ -31,6 +31,9 @@ struct QuestionnaireView: View {
             .navigationDestination(isPresented: $showChat) {
                 ChatView(userResponses: userResponses)
             }
+            .onAppear {
+                checkQuestionnaireSaveState()
+            }
         }
     }
     
@@ -88,7 +91,16 @@ struct QuestionnaireView: View {
                 Button(action: {
                     withAnimation {
                         if userResponses.prioritizedResponses[question.id]?.isEmpty == false {
+                            // Save progress for this question
+                            saveQuestionProgress()
+                            
+                            // Move to the next question
                             currentQuestionIndex += 1
+                            
+                            // If this was the last question, mark questionnaire as completed
+                            if currentQuestionIndex >= questions.count {
+                                userResponses.setQuestionnaireCompleted(true)
+                            }
                         }
                     }
                 }) {
@@ -135,6 +147,7 @@ struct QuestionnaireView: View {
             Button(action: {
                 userResponses.clear()
                 currentQuestionIndex = 0
+                DatabaseManager.shared.saveLastAnsweredQuestionIndex(0)
             }) {
                 Text("Start Over")
                     .font(.subheadline)
@@ -142,6 +155,33 @@ struct QuestionnaireView: View {
                     .padding()
             }
         }
+    }
+    
+    private func checkQuestionnaireSaveState() {
+        // If questionnaire is completed, show completion view
+        if userResponses.isQuestionnaireCompleted() {
+            currentQuestionIndex = questions.count
+            return
+        }
+        
+        // Otherwise, check for the last answered question and move to the next unanswered one
+        let lastAnsweredIndex = DatabaseManager.shared.getLastAnsweredQuestionIndex()
+        
+        // Start from the question after the last answered one
+        currentQuestionIndex = min(lastAnsweredIndex + 1, questions.count - 1)
+        
+        // If we're starting from a question that hasn't been answered yet, go back to it
+        if currentQuestionIndex > 0 {
+            let currentQuestionId = questions[currentQuestionIndex].id
+            if userResponses.prioritizedResponses[currentQuestionId]?.isEmpty != false {
+                currentQuestionIndex = lastAnsweredIndex
+            }
+        }
+    }
+    
+    private func saveQuestionProgress() {
+        // Save the current question index as the last answered
+        DatabaseManager.shared.saveLastAnsweredQuestionIndex(currentQuestionIndex)
     }
 }
 
