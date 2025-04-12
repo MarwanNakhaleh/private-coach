@@ -3,6 +3,11 @@ import SwiftUI
 struct ChatView: View {
     @StateObject private var llamaState = LlamaState()
     @State private var multiLineText = ""
+    @ObservedObject var userResponses: UserResponses
+    
+    init(userResponses: UserResponses) {
+        self.userResponses = userResponses
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -12,6 +17,8 @@ struct ChatView: View {
                     .font(.largeTitle)
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 ScrollView {
                     VStack {
@@ -19,6 +26,8 @@ struct ChatView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.top, 10)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(nil)
                         
                         // Invisible view at the bottom for scrolling
                         Color.clear
@@ -34,6 +43,8 @@ struct ChatView: View {
                 .onAppear {
                     // Scroll to bottom when view appears
                     proxy.scrollTo("bottomID", anchor: .bottom)
+                    // Initialize the coach with user responses
+                    initializeCoach()
                 }
             }
             .frame(maxWidth: .infinity)
@@ -71,17 +82,27 @@ struct ChatView: View {
             }
             .padding()
         }
+        .navigationBarBackButtonHidden(false)
+    }
+    
+    private func initializeCoach() {
+        do {
+            try llamaState.loadModel()
+            
+            // Initialize with user's responses
+            Task {
+                await llamaState.initializeWithResponses(responses: userResponses.getFormattedResponses())
+            }
+        } catch {
+            llamaState.messages += "Error loading model: \(error)\n"
+        }
     }
     
     private func sendMessage() {
         llamaState.messages += "\n\n"
         llamaState.messages += "*\(multiLineText)*"
         llamaState.messages += "\n\n"
-        do {
-            try llamaState.loadModel()
-        } catch {
-            llamaState.messages += "Error!\n"
-        }
+        
         Task {
             await llamaState.complete(text: multiLineText)
             multiLineText = ""
@@ -91,6 +112,7 @@ struct ChatView: View {
     private func clearMessages() {
         Task {
             await llamaState.clear()
+            initializeCoach()
         }
     }
 }

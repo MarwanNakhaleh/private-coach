@@ -1,0 +1,92 @@
+{
+  "questions": [
+    {
+      "id": "health",
+      "text": "What health goal would you like to focus on improving?",
+      "options": [
+        {
+          "id": "exercise",
+          "text": "Exercise more regularly"
+        },
+        {
+          "id": "nutrition",
+          "text": "Improve my nutrition and diet"
+        },
+        {
+          "id": "sleep",
+          "text": "Get better quality sleep"
+        },
+        {
+          "id": "stress",
+          "text": "Reduce stress and anxiety"
+        }
+      ]
+    },
+    {
+      "id": "career",
+      "text": "What career aspect would you like to develop?",
+      "options": [
+        {
+          "id": "skills",
+          "text": "Learn new skills or knowledge"
+        },
+        {
+          "id": "network",
+          "text": "Build a stronger professional network"
+        },
+        {
+          "id": "advancement",
+          "text": "Advance to a higher position"
+        },
+        {
+          "id": "balance",
+          "text": "Improve work-life balance"
+        }
+      ]
+    },
+    {
+      "id": "relationships",
+      "text": "Which relationship area would you like to improve?",
+      "options": [
+        {
+          "id": "family",
+          "text": "Family relationships"
+        },
+        {
+          "id": "friends",
+          "text": "Friendships"
+        },
+        {
+          "id": "romantic",
+          "text": "Romantic relationships"
+        },
+        {
+          "id": "professional",
+          "text": "Professional relationships"
+        }
+      ]
+    },
+    {
+      "id": "personal",
+      "text": "What personal growth area matters most to you right now?",
+      "options": [
+        {
+          "id": "mindfulness",
+          "text": "Mindfulness and mental clarity"
+        },
+        {
+          "id": "creativity",
+          "text": "Creative expression"
+        },
+        {
+          "id": "financial",
+          "text": "Financial management"
+        },
+        {
+          "id": "purpose",
+          "text": "Finding greater purpose and meaning"
+        }
+      ]
+    }
+  ]
+} 

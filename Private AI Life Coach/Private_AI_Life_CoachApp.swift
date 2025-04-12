@@ -17,7 +17,7 @@ struct Private_AI_Life_CoachApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ChatView()
+            QuestionnaireView()
         }
     }
 }
